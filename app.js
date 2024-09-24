@@ -14,24 +14,31 @@ async function checkWeather(city) {
     const response = await fetch(url);
     let data = await response.json();
 
-    if (response.status == 404) {
+    const weatherContainer = document.querySelector(".wheather-container");
+    
+    // Reset the background color before showing results
+    weatherContainer.style.backgroundImage = ""; // Reset background image
+    weatherContainer.style.backgroundColor = ""; // Reset background color
+
+    if (response.status === 404) {
       document.querySelector("#cityContent").textContent = "Invalid City Name";
       document.querySelector("#humiditytext").textContent = "";
       document.querySelector("#windtext").textContent = "";
+      document.querySelector("#Humidity").textContent = "";
+      document.querySelector("#wind").textContent = "";
+      document.querySelector("#Temperature").textContent = "";
+      weatherContainer.style.backgroundColor = "black"; 
     } else {
       document.querySelector("#cityContent").textContent = data.name;
       document.querySelector("#humiditytext").textContent = "Humidity";
       document.querySelector("#windtext").textContent = "wind";
-      document.querySelector("#Temperature").textContent =
-        "Temperature:" + Math.round(data.main.temp) + "°C";
-      document.querySelector("#Humidity").textContent =
-        data.main.humidity + "%";
-      document.querySelector("#wind").textContent =
-        Math.round(data.wind.speed) + "km/h";
+      document.querySelector("#Temperature").textContent = "Temperature: " + Math.round(data.main.temp) + "°C";
+      document.querySelector("#Humidity").textContent = data.main.humidity + "%";
+      document.querySelector("#wind").textContent = Math.round(data.wind.speed) + "km/h";
 
-      const weatherContainer = document.querySelector(".wheather-container ");
       const weatherCondition = data.weather[0].main.toLowerCase(); // Get the weather condition in lowercase
 
+      // Set background image based on weather condition
       if (weatherCondition === "clear") {
         weatherContainer.style.backgroundImage =
           "url('https://cdn.pixabay.com/photo/2018/08/06/22/55/sun-3588618_1280.jpg')"; // Clear sky background
